@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-green: #006a4e;
+  --color-red: #f42a41;
+  --color-gold: #d4a843;
+  --color-navy: #1a1a2e;
+  --color-offwhite: #f7f4ef;
+  --color-cream: #fdf9f0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-offwhite);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-bangla {
+  font-family: 'Tiro Bangla', serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 168, 67, 0.3); /* Gold/30 */
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 168, 67, 0.6);
+}
+
+/* Hide scrollbar utility */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Selection Highlight */
+::selection {
+  background: rgba(212, 168, 67, 0.2);
+  color: var(--color-navy);
+}
+
+/* Mobile Viewport Height Fix */
+.min-h-screen {
+  min-height: 100vh; /* Fallback */
+  min-height: 100dvh;
+}
+
+/* Safe Area Utilities (for notch/home indicators) */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 1rem);
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 1rem);
+}
+
+@layer components {
+  .glass {
+    @apply backdrop-blur-md bg-white/80 border border-white/60;
+  }
+  .section-padding {
+    @apply px-4 py-12 md:px-8 md:py-16;
+  }
+  .card-base {
+    @apply bg-white rounded-[2rem] shadow-soft border border-gray-100;
+  }
+  .thumb-target {
+    @apply min-h-[48px] min-w-[48px] touch-manipulation;
+  }
+}
+
+/* Animations */
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}

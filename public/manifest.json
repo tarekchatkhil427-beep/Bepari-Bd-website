@@ -1,0 +1,10 @@
+{
+  "name": "বেপারি-বিডি",
+  "short_name": "বেপারি-BD",
+  "description": "বাংলাদেশের পাইকারি মার্কেটপ্লেস",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#006a4e",
+  "orientation": "portrait"
+}
