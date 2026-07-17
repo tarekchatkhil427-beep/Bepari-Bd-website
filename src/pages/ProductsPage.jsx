@@ -22,7 +22,7 @@ export default function ProductsPage() {
     toggleFilterPanel 
   } = useUIStore();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     document.title = "পণ্যসমূহ | বেপারি-বিডি";
@@ -30,12 +30,6 @@ export default function ProductsPage() {
     if (catParam) {
       setSelectedCategory(catParam);
     }
-
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1200);
-
-    return () => clearTimeout(timer);
   }, [catParam, setSelectedCategory]);
 
   const allProducts = useMemo(() => {

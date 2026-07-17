@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PageLayout } from '../components/shared';
-import { MessageCircle, Phone, Mail, MapPin, CheckCircle2, ChevronDown, ChevronUp, ChevronRight } from 'lucide-react';
+import { MessageCircle, Phone, Mail, MapPin, CheckCircle2, ChevronDown, ChevronUp, ChevronRight, AlertCircle } from 'lucide-react';
 import { useContactStore } from '../store/useContactStore';
 import Button from '../components/ui/Button';
 import { Link } from 'react-router-dom';
+import { sendContactEmail } from '../utils/email';
 
 const DISTRICTS_COVERED = ["নোয়াখালী", "ফেনী", "চাঁদপুর", "লক্ষ্মীপুর", "কুমিল্লা", "ঢাকা"];
 
@@ -45,15 +46,22 @@ export default function ContactPage() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (useContactStore.getState().isSubmitting) return;
+    
     setBlurredFields({ name: true, phone: true, district: true, businessType: true });
     
     if (validateForm()) {
+      useContactStore.getState().setSubmitting(true);
       setSubmitStatus('submitting');
-      setTimeout(() => {
+      const result = await sendContactEmail(formData, 'contact_page');
+      useContactStore.getState().setSubmitting(false);
+      if (result.success) {
         setSubmitStatus('success');
-      }, 1500);
+      } else {
+        setSubmitStatus('error');
+      }
     }
   };
 
@@ -180,6 +188,28 @@ export default function ContactPage() {
                       নতুন বার্তা পাঠান
                     </Button>
                   </motion.div>
+                ) : submitStatus === 'error' ? (
+                  <motion.div 
+                    key="error"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="text-center py-12"
+                  >
+                    <div className="w-20 h-20 bg-red/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <AlertCircle className="w-10 h-10 text-red" />
+                    </div>
+                    <h3 className="font-bangla font-bold text-navy text-2xl mb-4">⚠️ পাঠানো সম্ভব হয়নি</h3>
+                    <p className="font-bangla text-gray-600 mb-8">ইমেইল পাঠাতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন অথবা হোয়াটসঅ্যাপে যোগাযোগ করুন।</p>
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                      <Button variant="gold" onClick={() => setSubmitStatus('idle')} className="font-bangla">
+                        আবার চেষ্টা করুন
+                      </Button>
+                      <Button variant="ghost" onClick={handleResetForm} className="font-bangla border border-gray-200">
+                        নতুন বার্তা
+                      </Button>
+                    </div>
+                  </motion.div>
                 ) : (
                   <motion.form 
                     key="form"
@@ -243,6 +273,24 @@ export default function ContactPage() {
                         {isFieldValid('phone') && <CheckCircle2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-green" />}
                       </div>
                       {errors.phone && <p className={errorClass}>⚠️ {errors.phone}</p>}
+                    </div>
+
+                    <div>
+                      <label className={labelClass}>ইমেইল <span className="text-gray-400 text-xs font-normal">(ঐচ্ছিক)</span></label>
+                      <div className="relative">
+                        <input 
+                          type="email" 
+                          placeholder="example@gmail.com" 
+                          className={inputClass}
+                          value={formData.email}
+                          onChange={(e) => setField('email', e.target.value)}
+                          onBlur={() => handleBlur('email')}
+                          name="email"
+                          autoComplete="email"
+                        />
+                        {isFieldValid('email') && <CheckCircle2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-green" />}
+                      </div>
+                      {errors.email && blurredFields.email && <p className={errorClass}>⚠️ {errors.email}</p>}
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

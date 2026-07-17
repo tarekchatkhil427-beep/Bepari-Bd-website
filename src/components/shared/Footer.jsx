@@ -34,6 +34,19 @@ export default function Footer() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
   };
 
+  const banglaYear = new Date().getFullYear()
+    .toString()
+    .replace(/0/g, '০')
+    .replace(/1/g, '১')
+    .replace(/2/g, '২')
+    .replace(/3/g, '৩')
+    .replace(/4/g, '৪')
+    .replace(/5/g, '৫')
+    .replace(/6/g, '৬')
+    .replace(/7/g, '৭')
+    .replace(/8/g, '৮')
+    .replace(/9/g, '৯');
+
   return (
     <footer className="bg-navy text-white pt-12 pb-28 px-4 md:pt-16 md:pb-8 md:px-8">
       <div className="max-w-7xl mx-auto">
@@ -124,7 +137,7 @@ export default function Footer() {
           className="mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0"
         >
           <p className="font-bangla text-gray-500 text-sm text-center md:text-left">
-            &copy; ২০২৪ বেপারি-বিডি। সর্বস্বত্ব সংরক্ষিত।
+            &copy; {banglaYear} বেপারি-বিডি। সর্বস্বত্ব সংরক্ষিত।
           </p>
           <p className="text-gray-500 text-sm text-center md:text-right">
             <span className="font-sans">NextGen Software</span>

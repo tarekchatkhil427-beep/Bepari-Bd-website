@@ -1,34 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ShoppingBag, Store, CheckCircle, Star } from 'lucide-react';
 import AppDownloadButtons from '../ui/AppDownloadButtons';
-
-// --- COUNTUP COMPONENT ---
-const CountUpNumber = ({ to, suffix = '' }) => {
-  const [val, setVal] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-
-  useEffect(() => {
-    if (isInView) {
-      let start = 0;
-      const end = parseInt(to, 10);
-      if (start === end) return;
-      const totalMs = 1500;
-      const step = end > 1000 ? Math.ceil(end / (totalMs / 10)) : 1;
-      const incrementTime = end > 1000 ? 10 : totalMs / end;
-      const timer = setInterval(() => {
-        start += step;
-        if (start >= end) { setVal(end); clearInterval(timer); }
-        else setVal(start);
-      }, incrementTime);
-      return () => clearInterval(timer);
-    }
-  }, [isInView, to]);
-
-  return <span ref={ref} className="font-sans">{val.toLocaleString()}{suffix}</span>;
-};
+import CountUpNumber from '../ui/CountUpNumber';
 
 // --- AURORA BACKGROUND ---
 const AuroraBackground = () => (

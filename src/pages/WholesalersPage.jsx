@@ -7,30 +7,12 @@ import BenefitsGrid from '../components/sections/BenefitsGrid';
 import WholesalerRegistrationForm from '../components/sections/WholesalerRegistrationForm';
 import FAQAccordion from '../components/ui/FAQAccordion';
 import AppDownloadButtons from '../components/ui/AppDownloadButtons';
+import CountUpNumber from '../components/ui/CountUpNumber';
 import { wholesalerBenefits } from '../data/benefits';
 import { faqsData } from '../data/faqs';
 import { Smartphone, PackageCheck, ShieldCheck, TrendingUp, BellRing, Check, BarChart3, Users, Store, Star, ArrowUpRight } from 'lucide-react';
 
 // ─── WHOLESALER HERO COMPONENT ──────────────────────────────────────────────
-
-const CountUpNumber = ({ to, suffix = '' }) => {
-  const [val, setVal] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-  useEffect(() => {
-    if (isInView) {
-      let start = 0;
-      const end = parseInt(to, 10);
-      const step = end > 1000 ? Math.ceil(end / 150) : 1;
-      const t = setInterval(() => {
-        start += step;
-        if (start >= end) { setVal(end); clearInterval(t); } else setVal(start);
-      }, 10);
-      return () => clearInterval(t);
-    }
-  }, [isInView, to]);
-  return <span ref={ref} className="font-sans">{val.toLocaleString()}{suffix}</span>;
-};
 
 const WholesalerAurora = () => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">

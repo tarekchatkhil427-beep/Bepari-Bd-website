@@ -2,22 +2,29 @@ import { useEffect } from 'react';
 import { useContactStore } from '../../store/useContactStore';
 import { useUIStore } from '../../store/useUIStore';
 import Button from '../ui/Button';
+import { sendContactEmail } from '../../utils/email';
 
 export default function WholesalerRegistrationForm() {
   const { formData, errors, setField, validateForm, setSubmitStatus, submitStatus, resetForm } = useContactStore();
   const { showToast } = useUIStore();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (useContactStore.getState().isSubmitting) return;
     
     if (validateForm()) {
+      useContactStore.getState().setSubmitting(true);
       setSubmitStatus('submitting');
-      // Simulate API call
-      setTimeout(() => {
+      const result = await sendContactEmail(formData, 'wholesaler_registration');
+      useContactStore.getState().setSubmitting(false);
+      if (result.success) {
         setSubmitStatus('success');
         showToast('✅ আপনার তথ্য পাঠানো হয়েছে! আমরা শীঘ্রই যোগাযোগ করব।', 'success');
         resetForm();
-      }, 1500);
+      } else {
+        setSubmitStatus('error');
+        showToast(result.error || 'ইমেইল পাঠানো সম্ভব হয়নি', 'error');
+      }
     } else {
       showToast('অনুগ্রহ করে সঠিক তথ্য দিয়ে ফর্মটি পূরণ করুন', 'error');
     }
@@ -63,6 +70,20 @@ export default function WholesalerRegistrationForm() {
             autoComplete="tel"
           />
           {errors.phone && <p className={errorClass}>⚠️ {errors.phone}</p>}
+        </div>
+
+        <div>
+          <label className={labelClass}>ইমেইল <span className="text-gray-400 text-xs font-normal">(ঐচ্ছিক)</span></label>
+          <input 
+            type="email" 
+            placeholder="example@gmail.com" 
+            className={inputClass}
+            value={formData.email}
+            onChange={(e) => setField('email', e.target.value)}
+            name="email"
+            autoComplete="email"
+          />
+          {errors.email && <p className={errorClass}>⚠️ {errors.email}</p>}
         </div>
 
         <div>

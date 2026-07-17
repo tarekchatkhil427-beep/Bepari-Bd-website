@@ -6,7 +6,6 @@ import SkeletonLoader from './components/ui/SkeletonLoader';
 import OfflineIndicator from './components/ui/OfflineIndicator';
 import AppDownloadModal from './components/ui/AppDownloadModal';
 import { useUIStore } from './store/useUIStore';
-import { useContentStore } from './store/useContentStore';
 
 // Lazy loaded routes for code-splitting
 const HomePage = React.lazy(() => import('./pages/HomePage'));
@@ -62,15 +61,6 @@ const GlobalToast = () => {
 // Animated Routes Wrapper
 function AnimatedRoutes() {
   const location = useLocation();
-  const { loadContent } = useContentStore();
-
-  useEffect(() => {
-    // Initialize global content load on app mount
-    loadContent();
-    
-    // Set visited flag for homepage greeting logic
-    localStorage.setItem('bepari_visited', 'true');
-  }, [loadContent]);
 
   return (
     <AnimatePresence mode="wait">

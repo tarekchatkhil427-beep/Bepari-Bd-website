@@ -22,20 +22,14 @@ export default function MarqueeStrip() {
 
   return (
     <div className="bg-green text-white py-3 overflow-hidden flex relative z-20 shadow-soft">
-      <style>
-        {`
-          @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
-          .animate-marquee {
-            animation: marquee 25s linear infinite;
-            display: flex;
-            width: max-content;
-          }
-        `}
-      </style>
-      <div className="animate-marquee hover:[animation-play-state:paused] active:[animation-play-state:paused] cursor-default">
+      <div
+        className="hover:[animation-play-state:paused] active:[animation-play-state:paused] cursor-default"
+        style={{
+          animation: 'marquee 25s linear infinite',
+          display: 'flex',
+          width: 'max-content',
+        }}
+      >
         {content}
         {content}
       </div>

@@ -26,17 +26,9 @@ export const useContentStore = create((set) => ({
    * Load static content from data files or API
    */
   loadContent: () => {
-    // In a real scenario, you would import data from src/data here
-    // or fetch from an API. For now, it's just setting loading state.
-    set({ isLoading: true, error: null });
-    try {
-      // Mock loading logic with delay
-      setTimeout(() => {
-        set({ isLoading: false });
-      }, 1500);
-    } catch (error) {
-      set({ error: error.message, isLoading: false });
-    }
+    // Static data is imported directly by components; no async fetch needed.
+    // Simply mark content as loaded immediately.
+    set({ isLoading: false, error: null });
   },
   
   setLoading: (isLoading) => set({ isLoading }),

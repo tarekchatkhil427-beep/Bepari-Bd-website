@@ -6,7 +6,6 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import BottomNavBar from './BottomNavBar';
 import WhatsAppButton from '../ui/WhatsAppButton';
-import Toast from '../ui/Toast';
 
 export default function PageLayout({ 
   children, 
@@ -133,8 +132,6 @@ export default function PageLayout({
         size="lg" 
         className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-40" 
       />
-      
-      <Toast />
     </div>
   );
 }

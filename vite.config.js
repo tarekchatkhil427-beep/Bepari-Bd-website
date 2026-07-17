@@ -7,10 +7,22 @@ export default defineConfig({
     outDir: 'dist',
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom', 'zustand'],
-          framer: ['framer-motion'],
-          icons: ['lucide-react']
+        manualChunks(id) {
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) {
+            return 'vendor';
+          }
+          if (id.includes('node_modules/react-router-dom')) {
+            return 'vendor';
+          }
+          if (id.includes('node_modules/zustand')) {
+            return 'vendor';
+          }
+          if (id.includes('node_modules/framer-motion')) {
+            return 'framer';
+          }
+          if (id.includes('node_modules/lucide-react')) {
+            return 'icons';
+          }
         }
       }
     },
