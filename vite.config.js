@@ -27,5 +27,7 @@ export default defineConfig({
       }
     },
     chunkSizeWarningLimit: 1000,
+    cssMinify: 'lightningcss',
+    target: 'es2020',
   }
 })

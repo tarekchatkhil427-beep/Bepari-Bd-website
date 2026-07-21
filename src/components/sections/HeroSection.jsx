@@ -1,35 +1,24 @@
 import { useState, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ShoppingBag, Store, CheckCircle, Star } from 'lucide-react';
 import AppDownloadButtons from '../ui/AppDownloadButtons';
 import CountUpNumber from '../ui/CountUpNumber';
 
 // --- AURORA BACKGROUND ---
-const AuroraBackground = () => (
+const AuroraBackground = () => {
+  const prefersReduced = useReducedMotion();
+  const stillAnim = prefersReduced ? {} : { scale: [1, 1.1, 1], x: [0, 10, 0] };
+  const stillTrans = prefersReduced ? { duration: 0 } : { duration: 14, repeat: Infinity, ease: 'easeInOut' };
+  return (
   <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-    {/* Base gradient */}
     <div className="absolute inset-0 bg-gradient-to-br from-[#f5f7ff] via-[#f0f9f4] to-[#fdfaf0]" />
-    {/* Aurora blobs */}
     <motion.div
-      animate={{ scale: [1, 1.15, 1], x: [0, 20, 0], y: [0, -10, 0] }}
-      transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+      animate={stillAnim}
+      transition={stillTrans}
       className="absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full"
       style={{ background: 'radial-gradient(circle, rgba(0,106,78,0.08) 0%, transparent 70%)' }}
     />
-    <motion.div
-      animate={{ scale: [1, 1.2, 1], x: [0, -20, 0], y: [0, 15, 0] }}
-      transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-      className="absolute -top-20 right-0 w-[500px] h-[500px] rounded-full"
-      style={{ background: 'radial-gradient(circle, rgba(212,168,67,0.07) 0%, transparent 70%)' }}
-    />
-    <motion.div
-      animate={{ scale: [1, 1.1, 1] }}
-      transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-      className="absolute bottom-0 left-1/3 w-[400px] h-[400px] rounded-full"
-      style={{ background: 'radial-gradient(circle, rgba(0,106,78,0.05) 0%, transparent 70%)' }}
-    />
-    {/* Subtle grid pattern */}
     <div
       className="absolute inset-0 opacity-[0.025]"
       style={{
@@ -38,10 +27,17 @@ const AuroraBackground = () => (
       }}
     />
   </div>
-);
+  );
+};
 
 // --- PHONE MOCKUP ---
-const PhoneMockup = () => (
+const PhoneMockup = () => {
+  const prefersReduced = useReducedMotion();
+  const badgeAnim = prefersReduced ? {} : { y: [0, -8, 0] };
+  const badgeTrans = prefersReduced ? { duration: 0 } : { duration: 3, repeat: Infinity, ease: 'easeInOut' };
+  const ratingAnim = prefersReduced ? {} : { y: [0, 8, 0] };
+  const ratingTrans = prefersReduced ? { duration: 0 } : { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 };
+  return (
   <motion.div
     initial={{ opacity: 0, y: 40, rotate: -3 }}
     animate={{ opacity: 1, y: 0, rotate: -3 }}
@@ -100,8 +96,8 @@ const PhoneMockup = () => (
     </div>
     {/* Floating notification badge */}
     <motion.div
-      animate={{ y: [0, -8, 0] }}
-      transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+      animate={badgeAnim}
+      transition={badgeTrans}
       className="absolute -right-10 top-16 bg-white rounded-2xl shadow-xl px-3 py-2 border border-gray-100 min-w-[130px]"
     >
       <div className="flex items-center gap-2">
@@ -116,8 +112,8 @@ const PhoneMockup = () => (
     </motion.div>
     {/* Floating rating badge */}
     <motion.div
-      animate={{ y: [0, 8, 0] }}
-      transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+      animate={ratingAnim}
+      transition={ratingTrans}
       className="absolute -left-10 bottom-24 bg-white rounded-2xl shadow-xl px-3 py-2 border border-gray-100"
     >
       <div className="flex items-center gap-1.5">
@@ -129,7 +125,8 @@ const PhoneMockup = () => (
       </div>
     </motion.div>
   </motion.div>
-);
+  );
+};
 
 // --- STATS ROW ---
 const StatsRow = () => (

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { PageLayout } from '../components/shared';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import WhatsAppButton from '../components/ui/WhatsAppButton';
 import BenefitsGrid from '../components/sections/BenefitsGrid';
@@ -14,20 +14,18 @@ import { Smartphone, PackageCheck, ShieldCheck, TrendingUp, BellRing, Check, Bar
 
 // ─── WHOLESALER HERO COMPONENT ──────────────────────────────────────────────
 
-const WholesalerAurora = () => (
+const WholesalerAurora = () => {
+  const prefersReduced = useReducedMotion();
+  const stillAnim = prefersReduced ? {} : { scale: [1, 1.1, 1] };
+  const stillTrans = prefersReduced ? { duration: 0 } : { duration: 13, repeat: Infinity, ease: 'easeInOut' };
+  return (
   <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
     <div className="absolute inset-0 bg-gradient-to-br from-[#fffdf5] via-[#f5f7ff] to-[#f2fbf7]" />
     <motion.div
-      animate={{ scale: [1, 1.1, 1], x: [0, 15, 0] }}
-      transition={{ duration: 13, repeat: Infinity, ease: 'easeInOut' }}
+      animate={stillAnim}
+      transition={stillTrans}
       className="absolute -top-40 -right-20 w-[600px] h-[600px] rounded-full"
       style={{ background: 'radial-gradient(circle, rgba(212,168,67,0.09) 0%, transparent 70%)' }}
-    />
-    <motion.div
-      animate={{ scale: [1, 1.15, 1], y: [0, -15, 0] }}
-      transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-      className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full"
-      style={{ background: 'radial-gradient(circle, rgba(0,106,78,0.06) 0%, transparent 70%)' }}
     />
     <div
       className="absolute inset-0 opacity-[0.025]"
@@ -37,9 +35,16 @@ const WholesalerAurora = () => (
       }}
     />
   </div>
-);
+  );
+};
 
-const SellerDashboardMockup = () => (
+const SellerDashboardMockup = () => {
+  const prefersReduced = useReducedMotion();
+  const orderAnim = prefersReduced ? {} : { y: [0, -10, 0] };
+  const orderTrans = prefersReduced ? { duration: 0 } : { duration: 3, repeat: Infinity, ease: 'easeInOut' };
+  const netAnim = prefersReduced ? {} : { y: [0, 8, 0] };
+  const netTrans = prefersReduced ? { duration: 0 } : { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1.2 };
+  return (
   <motion.div
     initial={{ opacity: 0, x: -40 }}
     animate={{ opacity: 1, x: 0 }}
@@ -102,8 +107,8 @@ const SellerDashboardMockup = () => (
 
     {/* Floating: new order */}
     <motion.div
-      animate={{ y: [0, -10, 0] }}
-      transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+      animate={orderAnim}
+      transition={orderTrans}
       className="absolute -left-8 md:-left-14 top-16 bg-white rounded-2xl shadow-xl px-3 py-2 border border-gray-100"
     >
       <div className="flex items-center gap-2">
@@ -119,8 +124,8 @@ const SellerDashboardMockup = () => (
 
     {/* Floating: network */}
     <motion.div
-      animate={{ y: [0, 8, 0] }}
-      transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
+      animate={netAnim}
+      transition={netTrans}
       className="absolute -right-8 md:-right-14 bottom-24 bg-white rounded-2xl shadow-xl px-3 py-2 border border-gray-100"
     >
       <div className="flex items-center gap-2">
@@ -134,7 +139,8 @@ const SellerDashboardMockup = () => (
       </div>
     </motion.div>
   </motion.div>
-);
+  );
+};
 
 function WholesalerHero({ onScrollToRegister }) {
   const containerVariants = {
@@ -276,7 +282,7 @@ export default function WholesalersPage() {
       description: 'শুধু মোবাইল দিয়ে পণ্যের ছবি তুলুন। বাকি সব করবে আমাদের smart AI powered app। AI নিজেই ছবিকে সুন্দর করবে, কনটেন্ট লিখবে এবং প্রোফেশনাল ডিজাইনারদের মত আকর্ষণীয়ভাবে পণ্য সাজিয়ে দেবে।',
       visual: (
         <div className="w-full h-64 rounded-2xl overflow-hidden shadow-soft border border-gray-100">
-          <img src="/Reference/AI_Product_upload.gif" alt="AI Product Upload" className="w-full h-full object-cover" loading="lazy" />
+          <img src="/images/AI_Product_upload.gif" alt="AI Product Upload" className="w-full h-full object-cover" loading="lazy" />
         </div>
       )
     },
@@ -289,7 +295,7 @@ export default function WholesalersPage() {
       description: 'অর্ডার এলেই সঙ্গে সঙ্গে মোবাইলে নোটিফিকেশন পাবেন। ড্যাশবোর্ড থেকে খুব সহজেই ইনভেন্টরি ও অর্ডার স্ট্যাটাস ট্র্যাক করতে পারবেন।',
       visual: (
         <div className="w-full h-64 rounded-2xl overflow-hidden shadow-soft border border-gray-100">
-          <img src="/Reference/Order_Management.gif" alt="Order Management" className="w-full h-full object-cover" loading="lazy" />
+          <img src="/images/Order_Management.gif" alt="Order Management" className="w-full h-full object-cover" loading="lazy" />
         </div>
       )
     },
@@ -302,7 +308,7 @@ export default function WholesalersPage() {
       description: 'পণ্য প্যাক করুন, অর্ডার নাম্বার লিখুন এবং শুধু "Product is Ready" তে চাপুন। আমাদের কুরিয়ার পার্টনার আপনার দোকান থেকেই পণ্য সংগ্রহ করে রিটেইলারের কাছে পৌঁছে দেবে।',
       visual: (
         <div className="w-full h-64 rounded-2xl overflow-hidden shadow-soft border border-gray-100">
-          <img src="/Reference/Product_Pickup.gif" alt="Product Pickup" className="w-full h-full object-cover" loading="lazy" />
+          <img src="/images/Product_Pickup.gif" alt="Product Pickup" className="w-full h-full object-cover" loading="lazy" />
         </div>
       )
     },
@@ -315,7 +321,7 @@ export default function WholesalersPage() {
       description: 'নির্ধারিত অগ্রিম এবং ক্যাশ অন ডেলিভারির মাধ্যমে নিরাপদ লেনদেন। ই-কমার্স পরিচালনার ঝামেলা আমাদের। আপনার মনোযোগ থাকুক ব্যবসা বৃদ্ধিতে।',
       visual: (
         <div className="w-full h-64 rounded-2xl overflow-hidden shadow-soft border border-gray-100">
-          <img src="/Reference/Payments.gif" alt="Payments" className="w-full h-full object-cover" loading="lazy" />
+          <img src="/images/Payments.gif" alt="Payments" className="w-full h-full object-cover" loading="lazy" />
         </div>
       )
     },

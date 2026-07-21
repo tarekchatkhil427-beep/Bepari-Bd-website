@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Check, X, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { PageLayout } from '../components/shared';
@@ -16,6 +16,7 @@ import { faqsData } from '../data/faqs';
 
 export default function RetailersPage() {
   const navigate = useNavigate();
+  const prefersReduced = useReducedMotion();
   const [activeCatId, setActiveCatId] = useState(categoriesData[0]?.id || 'cat1');
   const [showSticky, setShowSticky] = useState(false);
 
@@ -278,7 +279,11 @@ export default function RetailersPage() {
               >
                 <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-gold/10 rounded-full blur-2xl"></div>
                 <div className="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mb-6">
-                  <motion.div animate={{ rotate: [0, -10, 10, -10, 10, 0] }} transition={{ repeat: Infinity, duration: 2, delay: 1 }} className="text-4xl">🎁</motion.div>
+                  <motion.div
+                    animate={prefersReduced ? {} : { rotate: [0, -10, 10, -10, 10, 0] }}
+                    transition={prefersReduced ? { duration: 0 } : { repeat: Infinity, duration: 2, delay: 1 }}
+                    className="text-4xl"
+                  >🎁</motion.div>
                 </div>
                 <h3 className="font-bangla font-bold text-navy text-xl md:text-2xl mb-3">অর্ডার করুন, পয়েন্ট জিতুন</h3>
                 <p className="font-bangla text-gray-600">পয়েন্ট জমিয়ে পরিবার নিয়ে ঘুরে আসুন কক্সবাজারসহ বিভিন্ন আকর্ষণীয় স্থানে।</p>

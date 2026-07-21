@@ -1,25 +1,22 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ChevronRight, CheckCircle, Package, Clock, Truck, ShieldCheck, Star } from 'lucide-react';
 import AppDownloadButtons from '../ui/AppDownloadButtons';
 
 // --- AURORA BACKGROUND (Retailer variant — warmer, green-focused) ---
-const AuroraBackground = () => (
+const AuroraBackground = () => {
+  const prefersReduced = useReducedMotion();
+  const stillAnim = prefersReduced ? {} : { scale: [1, 1.1, 1] };
+  const stillTrans = prefersReduced ? { duration: 0 } : { duration: 14, repeat: Infinity, ease: 'easeInOut' };
+  return (
   <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
     <div className="absolute inset-0 bg-gradient-to-br from-[#f2fbf7] via-[#f5f7ff] to-[#fdfaf0]" />
     <motion.div
-      animate={{ scale: [1, 1.1, 1], y: [0, -20, 0] }}
-      transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
+      animate={stillAnim}
+      transition={stillTrans}
       className="absolute -top-40 left-1/4 w-[700px] h-[700px] rounded-full"
       style={{ background: 'radial-gradient(circle, rgba(0,106,78,0.07) 0%, transparent 70%)' }}
     />
-    <motion.div
-      animate={{ scale: [1, 1.15, 1], x: [0, 15, 0] }}
-      transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
-      className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full"
-      style={{ background: 'radial-gradient(circle, rgba(212,168,67,0.06) 0%, transparent 70%)' }}
-    />
-    {/* Subtle dot grid */}
     <div
       className="absolute inset-0 opacity-[0.03]"
       style={{
@@ -28,10 +25,13 @@ const AuroraBackground = () => (
       }}
     />
   </div>
-);
+  );
+};
 
 // --- APP MOCKUP (Retailer-focused screen) ---
-const RetailerAppMockup = () => (
+const RetailerAppMockup = () => {
+  const prefersReduced = useReducedMotion();
+  return (
   <motion.div
     initial={{ opacity: 0, x: 40 }}
     animate={{ opacity: 1, x: 0 }}
@@ -85,8 +85,8 @@ const RetailerAppMockup = () => (
 
     {/* Floating: delivery badge */}
     <motion.div
-      animate={{ y: [0, -10, 0] }}
-      transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+      animate={prefersReduced ? {} : { y: [0, -10, 0] }}
+      transition={prefersReduced ? { duration: 0 } : { duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
       className="absolute -right-8 md:-right-12 top-12 bg-white rounded-2xl shadow-xl px-3 py-2 border border-gray-100"
     >
       <div className="flex items-center gap-2">
@@ -102,8 +102,8 @@ const RetailerAppMockup = () => (
 
     {/* Floating: savings badge */}
     <motion.div
-      animate={{ y: [0, 10, 0] }}
-      transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
+      animate={prefersReduced ? {} : { y: [0, 10, 0] }}
+      transition={prefersReduced ? { duration: 0 } : { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
       className="absolute -left-8 md:-left-12 bottom-20 bg-white rounded-2xl shadow-xl px-3 py-2 border border-gray-100"
     >
       <div className="flex items-center gap-2">
@@ -117,7 +117,8 @@ const RetailerAppMockup = () => (
       </div>
     </motion.div>
   </motion.div>
-);
+  );
+};
 
 // --- MAIN COMPONENT ---
 export default function RetailerHero() {
